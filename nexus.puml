@@ -1,0 +1,97 @@
+@startuml
+skinparam dpi 150
+
+class Usuario{
+    -nickname : string
+    -senha : string
+    -profilePick : string
+    +criarMesa()
+}
+class Ficha
+class Jogador {
+    -usuario: Usuario
+    -mesa: Mesa
+    -bar_1_max_value : int 
+    -bar_1_min_value : int
+    -bar_1_value : int
+    -bar_2_max_value : int 
+    -bar_2_min_value : int
+    -bar_2_value : int
+    -bar_3_max_value : int 
+    -bar_3_min_value : int
+    -bar_3_value : int
+    +enviarMensagem()
+}
+class Bau
+class Mesa {
+    -dono : Usuario
+    -mestres : Usuario[]
+    -mapa : Mapa
+    -jogadores : Jogador[]
+    -chat : Chat
+    +addJogador()
+    +addMestre()
+    +removeJogador()
+    +removeMestre()
+}
+class Mapa {
+    -camada_1 : Camada
+    -camada_2 : Camada
+    -camada_3 : Camada
+    +addItem()
+}
+class Camada{
+    items: Item
+}
+class Miniatura {
+    -sprite: string
+    -bar_1_max_value : int 
+    -bar_1_min_value : int
+    -bar_1_value : int
+    -bar_2_max_value : int 
+    -bar_2_min_value : int
+    -bar_2_value : int
+    -bar_3_max_value : int 
+    -bar_3_min_value : int
+    -bar_3_value : int
+}
+class SomAmbiente
+class Chat {
+    -mensagems: string[]
+}
+class Rolagem {
+    +interpretarRolagem()
+}
+class Donate
+class Autenticacao
+class GatewayPagamento <<abstract>>
+class PayPalAPI <<interface>> <<external>>
+
+together{
+    class PagamentoDebito
+    class PagamentoPix
+    class PagamentoCredito
+}
+
+Usuario "0..1" - "1..1" Ficha : cria >
+Ficha -o Bau
+Mesa *-- Bau
+Mesa *-- SomAmbiente
+Mesa *-- Mapa
+Camada --* Mapa
+Miniatura "1..1" -- "0..*" Camada : < contém
+Usuario "0..*" - "1..n" Miniatura : controla >
+Mesa *-- Chat
+Rolagem --* Chat
+Usuario "0..*" - "0..*" Mesa : joga >
+(Usuario, Mesa) .. Jogador
+Usuario *- Bau
+Usuario "1..1" -- "0..*" Donate : faz >
+Autenticacao <.. Usuario
+Donate ..> GatewayPagamento
+PagamentoCredito ..|> GatewayPagamento
+PagamentoDebito ..|> GatewayPagamento
+PagamentoPix ..|> GatewayPagamento
+PagamentoDebito ..> PayPalAPI
+PagamentoCredito ..> PayPalAPI
+@enduml
