@@ -2,7 +2,6 @@
 skinparam dpi 150
 
 class Usuario{
-    -id_usuario: int
     -nickname : string
     -senha : string
     -profilePick : string
@@ -63,16 +62,7 @@ class Chat {
 class Rolagem {
     +interpretarRolagem()
 }
-class Doacao{
-    -id_doacao: int
-    +Doar()
-}
-class DoacaoUsuario{
-    -id_doacao: int
-    -id_usuario: int
-    -valor: int
-    -metodoPagamento: string
-}
+class Donate
 class Autenticacao
 class GatewayPagamento <<abstract>>
 class PayPalAPI <<interface>> <<external>>
@@ -96,8 +86,7 @@ Rolagem --* Chat
 Usuario "0..*" - "0..*" Mesa : joga >
 (Usuario, Mesa) .. Jogador
 Usuario *- Bau
-Usuario "1" -- "0..*" DoacaoUsuario : faz >
-DoacaoUsuario -- "1" Donate : referencia >
+Usuario "1..1" -- "0..*" Donate : faz >
 Autenticacao <.. Usuario
 Donate ..> GatewayPagamento
 PagamentoCredito ..|> GatewayPagamento
